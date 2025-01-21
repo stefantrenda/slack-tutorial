@@ -108,7 +108,7 @@ export const SingInCard = ({ setState }: SingInCardProps) => {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground ">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <span
             onClick={() => {
               setState("singUp");
