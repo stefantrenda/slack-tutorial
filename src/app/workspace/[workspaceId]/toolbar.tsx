@@ -20,7 +20,7 @@ export const Toolbar = () => {
         </Button>
       </div>
       <div className="ml-auto flex-1 flex item-center justify-end">
-        <Button variant="transparent" size="iconSm">
+        <Button variant="transparent" size="iconSm"> 
           <Info className="size-5 text-white" />
         </Button>
       </div>
