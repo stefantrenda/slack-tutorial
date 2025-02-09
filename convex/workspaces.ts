@@ -57,17 +57,20 @@ export const get = query({
       .withIndex("by_user_id", (q) => q.eq("userId", userId))
       .collect();
 
-    const workspaceIds = members.map((member) => member.workspaceId);
-
+      
+      
+      const workspaceIds = members.map((member) => member.workspaceId);
+      
     const workspaces = [];
 
     for (const workspaceId of workspaceIds) {
       const workspace = await ctx.db.get(workspaceId);
 
-      if (!workspace) {
+      if (workspace) {
         workspaces.push(workspace);
       }
     }
+
 
     return workspaces;
   },
@@ -115,7 +118,6 @@ export const update = mutation({
       .withIndex("by_workspace_id_user_id", (q) =>
         q.eq("workspaceId", args.id).eq("userId", userId)
       )
-
       .unique();
 
     if (!member || member.role !== "admin") {
@@ -146,19 +148,21 @@ export const remove = mutation({
       .withIndex("by_workspace_id_user_id", (q) =>
         q.eq("workspaceId", args.id).eq("userId", userId)
       )
-
       .unique();
 
     if (!member || member.role !== "admin") {
       return null;
     }
 
+
+    
+
     const [members] = await Promise.all([
       ctx.db
-      .query("members")
-      .withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id))
-      .collect()
-    ])
+        .query("members")
+        .withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id))
+        .collect(),
+    ]);
 
     for (const member of members) {
       await ctx.db.delete(member._id);

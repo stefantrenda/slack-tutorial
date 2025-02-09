@@ -1,3 +1,8 @@
+import { toast } from "sonner";
+import { useState } from "react";
+import { Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 import { useRemoveWorkspace } from "@/features/workspaces/api/use-remove-workspace";
 import { useUpdateWorkspace } from "@/features/workspaces/api/use-update-workspace";
 
@@ -7,12 +12,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogClose,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Trash } from "lucide-react";
-import { useState } from "react";
-import { DialogClose, DialogTrigger } from "@radix-ui/react-dialog";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 interface PreferencesModalProps {
   open: boolean;
@@ -25,6 +31,9 @@ export const PreferencesModal = ({
   setOpen,
   initialValue,
 }: PreferencesModalProps) => {
+  const workspaceId = useWorkspaceId();
+  const router = useRouter();
+
   const [value, setValue] = useState(initialValue);
   const [editOpen, setEditOpen] = useState(false);
 
@@ -32,6 +41,43 @@ export const PreferencesModal = ({
     useUpdateWorkspace();
   const { mutate: removeWorkspace, isPending: isRemovingWorkspace } =
     useRemoveWorkspace();
+
+  const handleRemove = () => {
+    removeWorkspace(
+      {
+        id: workspaceId,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Workspace removed");
+          router.replace("/");
+        },
+        onError: () => {
+          toast.error("Faild to remove workspace");
+        },
+      }
+    );
+  };
+
+  const handleEdit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    updateWorkspace(
+      {
+        id: workspaceId,
+        name: value,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Workspace updated");
+          setEditOpen(false);
+        },
+        onError: () => {
+          toast.error("Faild to update workspace");
+        },
+      }
+    );
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="p-0 bg-green-50 overflow-hidden">
@@ -56,7 +102,7 @@ export const PreferencesModal = ({
               <DialogHeader>
                 <DialogTitle>Rename this workspace</DialogTitle>
               </DialogHeader>
-              <form className="space-y-4" onSubmit={() => {}}>
+              <form className="space-y-4" onSubmit={handleEdit}>
                 <Input
                   value={value}
                   disabled={isUpdateingWorkspace}
@@ -70,19 +116,19 @@ export const PreferencesModal = ({
 
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button>
+                    <Button variant="outline" disabled={isUpdateingWorkspace}>
                       Cancel
                     </Button>
                   </DialogClose>
+                  <Button disabled={isUpdateingWorkspace}>Save</Button>
                 </DialogFooter>
               </form>
-
             </DialogContent>
           </Dialog>
 
           <button
-            disabled={false}
-            onClick={() => {}}
+            disabled={isRemovingWorkspace}
+            onClick={handleRemove}
             className="flex items-center gap-x-2 px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-50 text-rose-600"
           >
             <Trash className="size-4" />
