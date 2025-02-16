@@ -29,7 +29,7 @@ interface SidebarItemsProps {
   variant?: VariantProps<typeof sidebarItemVariants>["variant"];
 }
 
-export const SidebarItems = ({
+export const SidebarItem = ({
   label,
   id,
   icon: Icon,
@@ -45,8 +45,8 @@ export const SidebarItems = ({
       className={cn(sidebarItemVariants({ variant }))}
     >
       <Link href={`/workspace/${workspaceId}/channel/${id}`}>
-        <Icon />
-        <span>{label}</span>
+        <Icon className="size-3.5 mr-1 shrink-0" />
+        <span className="text-sm truncate">{label}</span>
       </Link>
     </Button>
   );
