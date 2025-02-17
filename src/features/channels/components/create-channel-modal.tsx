@@ -38,6 +38,8 @@ export const CreateChannelModal = () => {
         onSuccess: (id) => {
           handleClose();
         },
+
+        
       }
     );
   };
