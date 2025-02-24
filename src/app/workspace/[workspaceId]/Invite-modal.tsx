@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { CopyIcon, RefreshCcw, Variable } from "lucide-react";
+import { CopyIcon, RefreshCcw } from "lucide-react";
 
 import { useConfirm } from "@/hooks/use-confirm";
 import { useNewJoinCode } from "@/features/workspaces/api/use-new-join-code";
@@ -12,7 +12,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
 
