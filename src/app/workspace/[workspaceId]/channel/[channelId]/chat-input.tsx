@@ -21,7 +21,7 @@ type CreateMessageValues = {
   channelId: Id<"channels">;
   workspaceId: Id<"workspaces">;
   body: string;
-  imaage: Id<"_storage"> | undefined;
+  image: Id<"_storage"> | undefined;
 };
 
 export const ChatInput = ({ placeholder }: ChatInputProps) => {
@@ -45,7 +45,7 @@ export const ChatInput = ({ placeholder }: ChatInputProps) => {
         channelId,
         workspaceId,
         body,
-        imaage: undefined,
+        image: undefined,
       };
 
       if (image) {
@@ -69,7 +69,7 @@ export const ChatInput = ({ placeholder }: ChatInputProps) => {
 
         const { storageId } = await result.json();
 
-        values.imaage = storageId;
+        values.image = storageId;
       }
 
       await createMessage(values, {

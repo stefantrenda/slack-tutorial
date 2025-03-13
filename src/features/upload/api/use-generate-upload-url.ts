@@ -13,7 +13,7 @@ type Options = {
 };
 
 export const useGenerateUploadUrl = () => {
-  const mutation = useMutation(api.upload.generateUloadUrl);
+  const mutation = useMutation(api.upload.generateUploadUrl);
 
   const [data, setData] = useState<ResponseType | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -28,7 +28,8 @@ export const useGenerateUploadUrl = () => {
   const isSettled = useMemo(() => status === "settled", [status]);
 
   const mutate = useCallback(
-    async (_values: object, options: Options) => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    async (_values: {}, options: Options) => {
       try {
         setData(null);
         setError(null);
