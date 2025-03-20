@@ -19,7 +19,7 @@ const ChannelIdPage = () => {
     id: channelId,
   });
 
-  if (channelLoading && status === "LoadingFirstPage") {
+  if (channelLoading || status === "LoadingFirstPage") {
     return (
       <div className="h-full flex-1 flex items-center justify-center">
         <Loader className="animate-spin size-6 text-muted-foreground" />
@@ -47,7 +47,6 @@ const ChannelIdPage = () => {
         isLoadingMore={status === "LoadingMore"}
         canLoadMore={status === "CanLoadMore"}
       />
-      <div className="flex-1">{JSON.stringify(results)}</div>
       <ChatInput placeholder={`Message # ${channel.name}`} />
     </div>
   );
