@@ -86,15 +86,12 @@ export const Message = ({
     toggleReaction(
       { messageId: id, value },
       {
-        onSuccess: () => {
-          toast.success("Reaction added");
-        },
         onError: () => {
           toast.error("Failed to add reaction");
         },
       }
     );
-  }
+  };
 
   const handleDelete = async () => {
     const ok = await confirm();
@@ -136,8 +133,8 @@ export const Message = ({
           className={cn(
             "flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative",
             isEditing && "bg-[#f2c74433] hover:bg-[#f2c74433]",
-             isRemovingMessage &&
-            "bg-rose-500/50 transition transform-all scale-y-0 origin-bottom duration-200"
+            isRemovingMessage &&
+              "bg-rose-500/50 transition transform-all scale-y-0 origin-bottom duration-200"
           )}
         >
           <div className="flex items-center gap-2">
