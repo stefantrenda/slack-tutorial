@@ -1,5 +1,6 @@
 "use client";
-import { useEffect } from "react";
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
 import { AlertTriangle, Loader } from "lucide-react";
 
 import { useCreateOrGetConversations } from "@/features/conversations/api/use-create-or-get-conversation";
@@ -7,14 +8,17 @@ import { useCreateOrGetConversations } from "@/features/conversations/api/use-cr
 import { useMemberId } from "@/hooks/use-member-id";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
+import { Conversation } from "./conversation";
+import { Id } from "../../../../../../convex/_generated/dataModel";
+
 const MemberIdPage = () => {
   const memberId = useMemberId();
   const workspaceId = useWorkspaceId();
 
-  const { data, mutate, isPending } = useCreateOrGetConversations();
+  const [conversationId, setConversationId] =
+    useState<Id<"conversations"> | null>(null);
 
-  console.log("data", {data});
-  
+  const { mutate, isPending } = useCreateOrGetConversations();
 
   useEffect(() => {
     mutate(
@@ -24,10 +28,10 @@ const MemberIdPage = () => {
       },
       {
         onSuccess: (data) => {
-          console.log("data", data);
+          setConversationId(data);
         },
         onError: (error) => {
-          console.error("Error fetching conversations:", error);
+          toast.error("Error creating conversation: " + error.message);
         },
       }
     );
@@ -40,16 +44,19 @@ const MemberIdPage = () => {
       </div>
     );
   }
-  if (!data) {
+
+  if (!conversationId) {
     return (
       <div className="h-full flex flex-col gap-y-2 items-center justify-center">
         <AlertTriangle className="size-6  text-muted-foreground" />
-        <span className="text-sm text-muted-foreground">Conversatiion not found </span>
+        <span className="text-sm text-muted-foreground">
+          Conversatiion not found{" "}
+        </span>
       </div>
     );
   }
 
-  return <div>{JSON.stringify({ data })}</div>;
+  return <Conversation id={conversationId} />;
 };
 
 export default MemberIdPage;

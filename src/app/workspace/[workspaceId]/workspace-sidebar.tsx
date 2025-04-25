@@ -6,12 +6,13 @@ import {
   SendHorizontalIcon,
 } from "lucide-react";
 
-import { useGetMembers } from "@/features/members/api/use-get-member";
+import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useGetChannels } from "@/features/channels/api/use-get-channels";
 import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
 
+import { useMemberId } from "@/hooks/use-member-id";
 import { useChannelId } from "@/hooks/use-channel-id";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
@@ -21,6 +22,7 @@ import { WorkspaceHeader } from "./workspace-heder";
 import { WorkspaceSection } from "./workspace-section";
 
 const WorkspaceSidebar = () => {
+  const memberId = useMemberId()
   const channelId = useChannelId();
   const workspaceId = useWorkspaceId();
 
@@ -104,6 +106,7 @@ const WorkspaceSidebar = () => {
                 id={item._id}
                 label={item.user.name}
                 image={item.user.image}
+                variant={memberId === item._id ? "active" : "default"}
               />
             ))}
           </WorkspaceSection>

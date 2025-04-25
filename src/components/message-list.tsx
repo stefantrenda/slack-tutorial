@@ -1,16 +1,17 @@
-import { useState } from "react";
-import { differenceInMinutes, format, isToday, isYesterday } from "date-fns";
+import { useState } from 'react';
+import { Loader } from 'lucide-react';
+import { differenceInMinutes, format, isToday, isYesterday } from 'date-fns';
 
-import { useCurrentMember } from "@/features/members/api/use-current-member";
-import { GetMessagesReturnType } from "@/features/messages/api/use-get-messages";
+import { useCurrentMember } from '@/features/members/api/use-current-member';
+import { GetMessagesReturnType } from '@/features/messages/api/use-get-messages';
 
-import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { useWorkspaceId } from '@/hooks/use-workspace-id';
 
-import { Message } from "./message";
-import { ChannelHero } from "./channel-hero";
+import { Message } from './message';
+import { ChannelHero } from './channel-hero';
+import { ConversationHero } from './converstion-hero';
 
-import { Id } from "../../convex/_generated/dataModel";
-import { Loader } from "lucide-react";
+import { Id } from '../../convex/_generated/dataModel';
 
 const TIME_THRESHOLD = 5;
 
@@ -19,7 +20,7 @@ interface MessageListProps {
   memberImage?: string;
   channelName?: string;
   channelCreationTime?: number;
-  variant?: "channel" | "thread" | "conversation";
+  variant?: 'channel' | 'thread' | 'conversation';
   data: GetMessagesReturnType | undefined;
   loadMore: () => void;
   isLoadingMore: boolean;
@@ -28,9 +29,9 @@ interface MessageListProps {
 
 const formatDateLabel = (dateStr: string) => {
   const date = new Date(dateStr);
-  if (isToday(date)) return "Today";
-  if (isYesterday(date)) return "Yesterday";
-  return format(date, "EEEE, MMMM d");
+  if (isToday(date)) return 'Today';
+  if (isYesterday(date)) return 'Yesterday';
+  return format(date, 'EEEE, MMMM d');
 };
 
 export const MessageList = ({
@@ -39,12 +40,12 @@ export const MessageList = ({
   channelName,
   channelCreationTime,
   data,
-  variant = "channel",
+  variant = 'channel',
   loadMore,
   isLoadingMore,
   canLoadMore,
 }: MessageListProps) => {
-  const [editingId, setEditingId] = useState<Id<"messages"> | null>(null);
+  const [editingId, setEditingId] = useState<Id<'messages'> | null>(null);
 
   const workspaceId = useWorkspaceId();
 
@@ -53,7 +54,7 @@ export const MessageList = ({
   const groupedMessages = data?.reduce(
     (groups, message) => {
       const date = new Date(message._creationTime);
-      const dateKey = format(date, "yyyy-MM-dd");
+      const dateKey = format(date, 'yyyy-MM-dd');
       if (!groups[dateKey]) {
         groups[dateKey] = [];
       }
@@ -99,7 +100,7 @@ export const MessageList = ({
                 isEditing={editingId === message._id}
                 setEditingId={setEditingId}
                 isCompact={isCompact}
-                hideThreadButton={variant === "thread"}
+                hideThreadButton={variant === 'thread'}
                 threadCount={message.threadCount}
                 threadImage={message.threadImage}
                 threadTimestamp={message.threadTimestamp}
@@ -138,8 +139,11 @@ export const MessageList = ({
         </div>
       )}
 
-      {variant === "channel" && channelName && channelCreationTime && (
+      {variant === 'channel' && channelName && channelCreationTime && (
         <ChannelHero name={channelName} creationTime={channelCreationTime} />
+      )}
+      {variant === 'conversation'  && (
+        <ConversationHero name={memberName} image={memberImage} />
       )}
     </div>
   );
