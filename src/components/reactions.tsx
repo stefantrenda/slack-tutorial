@@ -1,19 +1,19 @@
-import { MdOutlineAddReaction } from "react-icons/md";
+import { MdOutlineAddReaction } from 'react-icons/md';
 
-import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { useWorkspaceId } from '@/hooks/use-workspace-id';
 
-import { cn } from "@/lib/utils";
-import { Hint } from "@/components/hint";
-import { useCurrentMember } from "@/features/members/api/use-current-member";
+import { cn } from '@/lib/utils';
+import { Hint } from '@/components/hint';
+import { useCurrentMember } from '@/features/members/api/use-current-member';
 
-import { EmojiPopover } from "./emoji-popover";
-import { Doc, Id } from "../../convex/_generated/dataModel";
+import { EmojiPopover } from './emoji-popover';
+import { Doc, Id } from '../../convex/_generated/dataModel';
 
 interface ReactionsProps {
   data: Array<
-    Omit<Doc<"reactions">, "memberId"> & {
+    Omit<Doc<'reactions'>, 'memberId'> & {
       count: number;
-      memberIds?: Id<"members">[];
+      memberIds?: Id<'members'>[];
     }
   >;
   onChange: (value: string) => void;
@@ -25,7 +25,6 @@ export const Reactions = ({ data, onChange }: ReactionsProps) => {
 
   const currentMemberId = currentMember?._id;
 
-
   if (data.length === 0 && !currentMemberId) {
     return null;
   }
@@ -35,21 +34,21 @@ export const Reactions = ({ data, onChange }: ReactionsProps) => {
       {data.map((reaction) => (
         <Hint
           key={reaction._id}
-          label={`${reaction.count} ${reaction.count === 1 ? "person" : "people"} reacted with ${reaction.value}`}
+          label={`${reaction.count} ${reaction.count === 1 ? 'person' : 'people'} reacted with ${reaction.value}`}
         >
           <button
             onClick={() => onChange(reaction.value)}
             className={cn(
-              "h-6 px-2 rounded-full bg-slate-200/70 border border-transparent text-slate-800 flex items-center gap-x-1",
-              reaction.memberIds?.includes(currentMemberId as Id<"members">) &&
-                "!bg-blue-100/70 !text-white !border-blue-500"
+              'h-6 px-2 rounded-full bg-slate-200/70 border border-transparent text-slate-800 flex items-center gap-x-1',
+              reaction.memberIds?.includes(currentMemberId as Id<'members'>) &&
+                '!bg-blue-100/70 !text-white !border-blue-500'
             )}
           >
             {reaction.value}
             <span
               className={cn(
-                "text-xs font-semibold text-muted-foreground",
-                reaction.memberIds?.includes(currentMemberId as Id<"members">) && "text-blue-500"
+                'text-xs font-semibold text-muted-foreground',
+                reaction.memberIds?.includes(currentMemberId as Id<'members'>) && 'text-blue-500'
               )}
             >
               {reaction.count}
@@ -58,7 +57,7 @@ export const Reactions = ({ data, onChange }: ReactionsProps) => {
         </Hint>
       ))}
 
-      <EmojiPopover hint="Add a reaction" onEmojiSelect={(emoji) => onChange(emoji.native)}>
+      <EmojiPopover hint="Add a reaction" onEmojiSelect={(emoji) => onChange(emoji)}>
         <button className="h-7 px-3 rounded-full bg-slate200/70 border border-transparent hover:border-slate-500 text-slate-800 flex items-center gap-x-1">
           <MdOutlineAddReaction className="size-4" />
         </button>

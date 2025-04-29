@@ -1,5 +1,3 @@
-import { query } from './../node_modules/convex/src/cli/codegen_templates/server';
-import { update } from './channels';
 import { v } from 'convex/values';
 
 import { auth } from './auth';
