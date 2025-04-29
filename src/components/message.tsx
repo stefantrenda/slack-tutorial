@@ -65,7 +65,6 @@ export const Message = ({
   createdAt,
   updatedAt,
   isEditing,
-  isComment,
   setEditingId,
   hideThreadButton,
   isCompact,
